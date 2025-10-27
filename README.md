@@ -29,9 +29,6 @@ This landing page aggregates 6 Ignite-aligned learning challenges:
 ├── index.html              # Main landing page
 ├── styles.css              # Microsoft Design System styling
 ├── script.js               # Interactivity and analytics hooks
-├── .github/
-│   └── workflows/
-│       └── pages.yml       # GitHub Pages deployment workflow
 └── README.md               # This file
 ```
 
@@ -59,24 +56,67 @@ npx http-server
 
 ## Deployment
 
-### GitHub Pages (Automatic)
-
-The site automatically deploys to GitHub Pages when pushed to the `main` branch.
+### GitHub Pages Setup
 
 **Deployment URL:** `https://azure.github.io/azure-skilling-challenges-2025`
 
-### Enable GitHub Pages
+To enable GitHub Pages:
 
-1. Go to repository Settings → Pages
-2. Source: "GitHub Actions"
-3. The workflow will automatically deploy on push to `main`
+1. Merge this branch to `main`
+2. Go to repository Settings → Pages
+3. Source: Select "Deploy from a branch"
+4. Branch: Select `main` and `/ (root)`
+5. Click "Save"
 
-### Manual Deployment
+The site will automatically deploy whenever you push to `main`.
 
-To trigger a manual deployment:
-1. Go to Actions tab in GitHub
-2. Select "Deploy to GitHub Pages" workflow
-3. Click "Run workflow"
+### Alternative: GitHub Actions Workflow
+
+If you prefer automated deployments with GitHub Actions, you can create `.github/workflows/pages.yml`:
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+Then in Settings → Pages, select "GitHub Actions" as the source.
 
 ## Updating Challenge URLs
 
