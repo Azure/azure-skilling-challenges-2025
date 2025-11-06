@@ -1,0 +1,710 @@
+/* ==========================================
+   CSS CUSTOM PROPERTIES (THEMING)
+   ========================================== */
+:root {
+    /* Microsoft Color Palette */
+    --color-azure-blue: #0078d4;
+    --color-purple: #5c2d91;
+    --color-orange: #d83b01;
+    --color-red: #e81123;
+    --color-green: #107c10;
+    --color-gray: #323130;
+    --color-gray-light: #605e5c;
+    --color-gray-lighter: #edebe9;
+    --color-gray-lightest: #f3f2f1;
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    /* Typography */
+    --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+    --font-size-base: 16px;
+    --font-size-small: 14px;
+    --font-size-large: 18px;
+    --font-size-h1: 48px;
+    --font-size-h2: 36px;
+    --font-size-h3: 24px;
+    --font-size-h4: 20px;
+    --line-height-base: 1.6;
+    --line-height-heading: 1.2;
+
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    --spacing-xxl: 64px;
+
+    /* Shadows (Fluent Design) */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.14);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.16);
+    --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.18);
+
+    /* Border Radius */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 250ms ease-in-out;
+    --transition-slow: 350ms ease-in-out;
+
+    /* Layout */
+    --container-max-width: 1200px;
+    --container-padding: 20px;
+}
+
+/* ==========================================
+   RESET & BASE STYLES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: var(--font-size-base);
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: var(--line-height-base);
+    color: var(--color-gray);
+    background-color: var(--color-white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: var(--color-azure-blue);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-purple);
+}
+
+a:focus {
+    outline: 2px solid var(--color-azure-blue);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   LAYOUT UTILITIES
+   ========================================== */
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+/* ==========================================
+   EVENT RIBBON
+   ========================================== */
+.event-ribbon {
+    background: linear-gradient(135deg, var(--color-azure-blue), var(--color-purple));
+    color: var(--color-white);
+    padding: var(--spacing-sm) 0;
+    text-align: center;
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+}
+
+.live-indicator {
+    color: #ff4136;
+    font-size: 12px;
+    margin-right: var(--spacing-xs);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ==========================================
+   HERO SECTION
+   ========================================== */
+.hero {
+    background: linear-gradient(180deg, var(--color-gray-lightest) 0%, var(--color-white) 100%);
+    padding: var(--spacing-xxl) 0;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: var(--font-size-h1);
+    font-weight: 700;
+    line-height: var(--line-height-heading);
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-md);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-subtitle {
+    font-size: var(--font-size-large);
+    color: var(--color-gray-light);
+    max-width: 800px;
+    margin: 0 auto var(--spacing-xl);
+    line-height: 1.7;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-xl);
+}
+
+.stat {
+    text-align: center;
+    min-width: 150px;
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--color-azure-blue);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: var(--font-size-small);
+    color: var(--color-gray-light);
+    margin-top: var(--spacing-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   CHALLENGES SECTION
+   ========================================== */
+.challenges {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--color-white);
+}
+
+.section-title {
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    color: var(--color-gray);
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-subtitle {
+    font-size: var(--font-size-large);
+    color: var(--color-gray-light);
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto var(--spacing-xl);
+}
+
+.challenges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+.challenge-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-lighter);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.challenge-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--card-accent-color, var(--color-azure-blue)), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.challenge-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.challenge-card:hover::before {
+    opacity: 1;
+}
+
+.challenge-card:focus-within {
+    outline: 2px solid var(--color-azure-blue);
+    outline-offset: 2px;
+}
+
+/* Challenge Card Color Accents */
+.ai-card { --card-accent-color: var(--color-purple); }
+.data-card { --card-accent-color: var(--color-orange); }
+.infra-card { --card-accent-color: var(--color-azure-blue); }
+.github-card { --card-accent-color: var(--color-gray); }
+.security-card { --card-accent-color: var(--color-red); }
+.fullstack-card { --card-accent-color: var(--color-green); }
+
+.challenge-icon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.challenge-title {
+    font-size: var(--font-size-h3);
+    font-weight: 600;
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.challenge-description {
+    color: var(--color-gray-light);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.challenge-features {
+    list-style: none;
+    margin-bottom: var(--spacing-md);
+}
+
+.challenge-features li {
+    padding-left: var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    position: relative;
+    color: var(--color-gray);
+    font-size: var(--font-size-small);
+}
+
+.challenge-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--card-accent-color, var(--color-azure-blue));
+    font-weight: 700;
+}
+
+.challenge-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-gray-lighter);
+    font-size: var(--font-size-small);
+}
+
+.time-estimate {
+    color: var(--color-gray-light);
+}
+
+.difficulty {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.difficulty.beginner {
+    background-color: #e8f5e9;
+    color: var(--color-green);
+}
+
+.difficulty.intermediate {
+    background-color: #fff3e0;
+    color: var(--color-orange);
+}
+
+.difficulty.advanced {
+    background-color: #fce4ec;
+    color: var(--color-red);
+}
+
+/* ==========================================
+   BUTTONS
+   ========================================== */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    text-align: center;
+    border-radius: var(--border-radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.btn:focus {
+    outline: 2px solid var(--color-azure-blue);
+    outline-offset: 2px;
+}
+
+.btn-primary {
+    background-color: var(--color-azure-blue);
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-purple);
+    color: var(--color-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-azure-blue);
+    border: 2px solid var(--color-azure-blue);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-azure-blue);
+    color: var(--color-white);
+}
+
+.btn-large {
+    padding: 16px 32px;
+    font-size: var(--font-size-large);
+}
+
+.challenge-cta {
+    width: 100%;
+    margin-top: var(--spacing-sm);
+}
+
+/* ==========================================
+   PROOF SECTION
+   ========================================== */
+.proof {
+    background: linear-gradient(135deg, var(--color-purple), var(--color-azure-blue));
+    color: var(--color-white);
+    padding: var(--spacing-xxl) 0;
+    text-align: center;
+}
+
+.proof .section-title,
+.proof .section-subtitle {
+    color: var(--color-white);
+}
+
+.proof-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+    margin: var(--spacing-xl) 0;
+}
+
+.proof-stat {
+    text-align: center;
+    min-width: 200px;
+}
+
+.proof-number {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: var(--spacing-xs);
+}
+
+.proof-label {
+    font-size: var(--font-size-base);
+    opacity: 0.9;
+}
+
+.proof-note {
+    font-size: var(--font-size-small);
+    opacity: 0.8;
+    font-style: italic;
+    margin-top: var(--spacing-lg);
+}
+
+/* ==========================================
+   HOW IT WORKS SECTION
+   ========================================== */
+.how-it-works {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--color-gray-lightest);
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+.step {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.step-number {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--color-azure-blue), var(--color-purple));
+    color: var(--color-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 auto var(--spacing-md);
+}
+
+.step-title {
+    font-size: var(--font-size-h4);
+    font-weight: 600;
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.step-description {
+    color: var(--color-gray-light);
+    line-height: 1.6;
+}
+
+/* ==========================================
+   CTA SECTION
+   ========================================== */
+.cta-section {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--color-white);
+    text-align: center;
+}
+
+.cta-title {
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.cta-subtitle {
+    font-size: var(--font-size-large);
+    color: var(--color-gray-light);
+    margin-bottom: var(--spacing-xl);
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+.footer {
+    background-color: var(--color-gray);
+    color: var(--color-gray-lightest);
+    padding: var(--spacing-xxl) 0 var(--spacing-lg);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.footer-heading {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-white);
+    margin-bottom: var(--spacing-sm);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.footer-links a {
+    color: var(--color-gray-lightest);
+    font-size: var(--font-size-small);
+    transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--color-white);
+}
+
+.footer-text {
+    font-size: var(--font-size-small);
+    color: var(--color-gray-lightest);
+    line-height: 1.6;
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--color-gray-light);
+    padding-top: var(--spacing-md);
+    text-align: center;
+    font-size: var(--font-size-small);
+    color: var(--color-gray-lightest);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+/* Mobile (up to 480px) */
+@media (max-width: 480px) {
+    :root {
+        --font-size-h1: 32px;
+        --font-size-h2: 28px;
+        --font-size-h3: 20px;
+        --spacing-xxl: 32px;
+        --spacing-xl: 24px;
+    }
+
+    .hero-stats,
+    .proof-stats {
+        gap: var(--spacing-md);
+    }
+
+    .stat,
+    .proof-stat {
+        min-width: 120px;
+    }
+
+    .stat-number {
+        font-size: 36px;
+    }
+
+    .proof-number {
+        font-size: 48px;
+    }
+
+    .challenges-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-large {
+        width: 100%;
+    }
+}
+
+/* Tablet (481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    :root {
+        --font-size-h1: 40px;
+        --font-size-h2: 32px;
+    }
+
+    .challenges-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Desktop (769px to 1200px) - default styles already optimized */
+
+/* Large Desktop (1201px+) */
+@media (min-width: 1201px) {
+    .challenges-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ==========================================
+   ACCESSIBILITY
+   ========================================== */
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .challenge-card {
+        border: 2px solid var(--color-gray);
+    }
+
+    .btn-primary {
+        border: 2px solid var(--color-gray);
+    }
+}
+
+/* Focus Visible (for keyboard navigation) */
+:focus-visible {
+    outline: 3px solid var(--color-azure-blue);
+    outline-offset: 2px;
+}
+
+/* Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ==========================================
+   PRINT STYLES
+   ========================================== */
+@media print {
+    .event-ribbon,
+    .footer {
+        display: none;
+    }
+
+    body {
+        background-color: var(--color-white);
+    }
+
+    .challenge-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
