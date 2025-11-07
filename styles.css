@@ -447,6 +447,107 @@ a:focus {
 }
 
 /* ==========================================
+   ANNOUNCEMENTS SECTION
+   ========================================== */
+.announcements {
+    background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+    padding: var(--spacing-xxl) 0;
+}
+
+.announcements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.announcement-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-lighter);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    position: relative;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
+}
+
+.announcement-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.announcement-card.featured {
+    border: 2px solid var(--color-azure-blue);
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.1);
+}
+
+.announcement-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--color-azure-blue);
+    color: var(--color-white);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.announcement-icon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-sm);
+    display: block;
+}
+
+.announcement-title {
+    font-size: var(--font-size-h3);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-gray);
+    line-height: 1.3;
+}
+
+.announcement-description {
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-gray-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.announcement-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-gray-lighter);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.announcement-date {
+    font-size: var(--font-size-small);
+    color: var(--color-gray-light);
+    font-weight: 500;
+}
+
+.announcement-link {
+    color: var(--color-azure-blue);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: var(--font-size-small);
+    transition: color var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.announcement-link:hover {
+    color: var(--color-purple);
+}
+
+/* ==========================================
    HOW IT WORKS SECTION
    ========================================== */
 .how-it-works {
@@ -613,6 +714,32 @@ a:focus {
         gap: var(--spacing-md);
     }
 
+    .announcements-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .announcement-card {
+        padding: var(--spacing-md);
+    }
+
+    .announcement-icon {
+        font-size: 36px;
+    }
+
+    .announcement-title {
+        font-size: var(--font-size-h4);
+    }
+
+    .announcement-description {
+        font-size: var(--font-size-small);
+    }
+
+    .announcement-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .cta-buttons {
         flex-direction: column;
         align-items: stretch;
@@ -631,6 +758,10 @@ a:focus {
     }
 
     .challenges-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .announcements-grid {
         grid-template-columns: 1fr;
     }
 }
