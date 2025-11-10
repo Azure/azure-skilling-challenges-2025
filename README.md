@@ -1,8 +1,8 @@
-# Azure Ignite Challenges
+# Azure Skilling Challenges
 
-Welcome to the Azure Ignite Challenges landing page, featuring 9 hands-on learning tracks.
+Welcome to the Azure Skilling Challenges landing page, featuring 9 hands-on learning tracks.
 
-This landing page aggregates 9 Ignite-aligned learning challenges:
+This landing page showcases 9 hands-on learning challenges:
 
 1. **Innovate with AI Agents** - Azure AI Agent Service, multi-agent orchestration, agent frameworks  
 2. **Build AI Apps with Azure** - Azure OpenAI Service, RAG patterns, prompt engineering  
