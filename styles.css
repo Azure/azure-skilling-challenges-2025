@@ -153,13 +153,30 @@ a:focus {
     left: 0;
     width: 100%;
     height: 100%;
+    /* CSS Custom Properties for dynamic gradient (updated by JavaScript) */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    --layer1-x: 40%;
+    --layer1-y: 50%;
+    --layer2-x: 70%;
+    --layer2-y: 70%;
+    --layer3-x: 30%;
+    --layer3-y: 30%;
     background:
-        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(92, 45, 145, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(0, 120, 212, 0.2) 0%, transparent 50%),
+        /* Mouse-following spotlight with stronger glow */
+        radial-gradient(circle 800px at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.15) 0%, transparent 60%),
+        /* Parallax layer 1 - slow movement */
+        radial-gradient(circle 600px at var(--layer1-x) var(--layer1-y), rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        /* Parallax layer 2 - medium movement */
+        radial-gradient(circle 500px at var(--layer2-x) var(--layer2-y), rgba(92, 45, 145, 0.25) 0%, transparent 50%),
+        /* Parallax layer 3 - fast movement */
+        radial-gradient(circle 400px at var(--layer3-x) var(--layer3-y), rgba(0, 120, 212, 0.2) 0%, transparent 50%),
+        /* Base gradient */
         linear-gradient(135deg, #0078d4 0%, #5c2d91 50%, #0c62a4 100%);
     opacity: 1;
     z-index: 0;
+    /* Smooth transitions for non-JavaScript updates */
+    transition: background 0.3s ease;
 }
 
 .hero-banner::before {

@@ -312,6 +312,113 @@
     };
 
     // ==========================================
+    // INTERACTIVE HERO GRADIENT
+    // ==========================================
+    const InteractiveHero = {
+        hero: null,
+        heroBanner: null,
+        isReducedMotion: false,
+        mouseX: 0,
+        mouseY: 0,
+        currentX: 0,
+        currentY: 0,
+        animationFrame: null,
+
+        /**
+         * Initialize interactive hero gradient
+         */
+        init: function() {
+            this.hero = document.querySelector('.hero');
+            this.heroBanner = document.querySelector('.hero-banner');
+
+            if (!this.hero || !this.heroBanner) return;
+
+            // Check for reduced motion preference
+            this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (this.isReducedMotion) {
+                console.log('[Interactive Hero] Reduced motion preferred - static gradient');
+                return;
+            }
+
+            // Listen for mouse movement on hero section
+            this.hero.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+            this.hero.addEventListener('mouseleave', () => this.handleMouseLeave());
+
+            // Start animation loop
+            this.animate();
+
+            console.log('[Interactive Hero] Dynamic gradient initialized');
+        },
+
+        /**
+         * Handle mouse movement
+         */
+        handleMouseMove: function(e) {
+            const rect = this.hero.getBoundingClientRect();
+
+            // Calculate mouse position relative to hero (0 to 1)
+            this.mouseX = (e.clientX - rect.left) / rect.width;
+            this.mouseY = (e.clientY - rect.top) / rect.height;
+        },
+
+        /**
+         * Handle mouse leaving hero area
+         */
+        handleMouseLeave: function() {
+            // Return to center
+            this.mouseX = 0.5;
+            this.mouseY = 0.5;
+        },
+
+        /**
+         * Smooth animation loop using lerp (linear interpolation)
+         */
+        animate: function() {
+            // Lerp for smooth following (0.05 = slower, 0.2 = faster)
+            const smoothing = 0.08;
+            this.currentX += (this.mouseX - this.currentX) * smoothing;
+            this.currentY += (this.mouseY - this.currentY) * smoothing;
+
+            // Convert to percentages for CSS
+            const xPercent = this.currentX * 100;
+            const yPercent = this.currentY * 100;
+
+            // Create parallax layers with different speeds
+            const layer1X = 40 + (xPercent - 50) * 0.3; // Slow layer
+            const layer1Y = 50 + (yPercent - 50) * 0.3;
+
+            const layer2X = 70 + (xPercent - 50) * 0.5; // Medium layer
+            const layer2Y = 70 + (yPercent - 50) * 0.5;
+
+            const layer3X = 30 + (xPercent - 50) * 0.7; // Fast layer
+            const layer3Y = 30 + (yPercent - 50) * 0.7;
+
+            // Update CSS custom properties for gradient positions
+            this.heroBanner.style.setProperty('--mouse-x', `${xPercent}%`);
+            this.heroBanner.style.setProperty('--mouse-y', `${yPercent}%`);
+            this.heroBanner.style.setProperty('--layer1-x', `${layer1X}%`);
+            this.heroBanner.style.setProperty('--layer1-y', `${layer1Y}%`);
+            this.heroBanner.style.setProperty('--layer2-x', `${layer2X}%`);
+            this.heroBanner.style.setProperty('--layer2-y', `${layer2Y}%`);
+            this.heroBanner.style.setProperty('--layer3-x', `${layer3X}%`);
+            this.heroBanner.style.setProperty('--layer3-y', `${layer3Y}%`);
+
+            // Continue animation loop
+            this.animationFrame = requestAnimationFrame(() => this.animate());
+        },
+
+        /**
+         * Clean up animation frame
+         */
+        destroy: function() {
+            if (this.animationFrame) {
+                cancelAnimationFrame(this.animationFrame);
+            }
+        }
+    };
+
+    // ==========================================
     // INITIALIZATION
     // ==========================================
     function init() {
@@ -339,6 +446,9 @@
 
         // Accessibility enhancements
         Accessibility.initKeyboardShortcuts();
+
+        // Initialize interactive hero gradient
+        InteractiveHero.init();
 
         // Log ready state
         console.log('[Init] All features initialized');
