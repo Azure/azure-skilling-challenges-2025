@@ -485,11 +485,53 @@
     };
 
     // ==========================================
+    // MOBILE NAVIGATION
+    // ==========================================
+    const MobileNav = {
+        /**
+         * Initialize mobile navigation toggle
+         */
+        init: function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (!navToggle || !navLinks) return;
+
+            navToggle.addEventListener('click', () => {
+                const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+                navToggle.setAttribute('aria-expanded', !isExpanded);
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking on a link
+            navLinks.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            console.log('[Mobile Nav] Initialized');
+        }
+    };
+
+    // ==========================================
     // INITIALIZATION
     // ==========================================
     function init() {
         console.log('[Init] Microsoft Ignite 2025 Azure Skilling Challenges');
         console.log('[Init] Landing page loaded successfully');
+
+        // Initialize mobile navigation
+        MobileNav.init();
 
         // Track page load performance
         Analytics.trackPageLoad();
