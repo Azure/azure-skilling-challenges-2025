@@ -807,6 +807,32 @@ a:focus {
 }
 
 /* ==========================================
+   WARNING / NOTICE BOX
+   ========================================== */
+.warning-box {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: #fff3cd;
+    border-left: 4px solid var(--color-orange);
+    border-radius: var(--border-radius-md);
+}
+
+.warning-box-title {
+    margin-top: 0;
+    color: var(--color-orange);
+}
+
+.warning-box-list {
+    color: var(--color-gray-light);
+    line-height: 1.8;
+    margin-left: var(--spacing-md);
+}
+
+.warning-box-note {
+    color: var(--color-gray-light);
+}
+
+/* ==========================================
    RESPONSIVE DESIGN
    ========================================== */
 
