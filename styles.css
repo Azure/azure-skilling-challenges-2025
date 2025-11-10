@@ -140,25 +140,65 @@ a:focus {
    HERO SECTION
    ========================================== */
 .hero {
-    background: linear-gradient(180deg, var(--color-gray-lightest) 0%, var(--color-white) 100%);
+    position: relative;
+    background: linear-gradient(135deg, #0078d4 0%, #5c2d91 50%, #0078d4 100%);
     padding: var(--spacing-xxl) 0;
     text-align: center;
+    overflow: hidden;
+}
+
+.hero-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(92, 45, 145, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(0, 120, 212, 0.2) 0%, transparent 50%),
+        linear-gradient(135deg, #0078d4 0%, #5c2d91 50%, #0c62a4 100%);
+    opacity: 1;
+    z-index: 0;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.03) 35px, rgba(255, 255, 255, 0.03) 70px);
+    animation: slide 20s linear infinite;
+}
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(70px); }
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
 }
 
 .hero-title {
     font-size: var(--font-size-h1);
     font-weight: 700;
     line-height: var(--line-height-heading);
-    color: var(--color-gray);
+    color: var(--color-white);
     margin-bottom: var(--spacing-md);
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .hero-subtitle {
     font-size: var(--font-size-large);
-    color: var(--color-gray-light);
+    color: rgba(255, 255, 255, 0.95);
     max-width: 800px;
     margin: 0 auto var(--spacing-xl);
     line-height: 1.7;
@@ -180,16 +220,37 @@ a:focus {
 .stat-number {
     font-size: 48px;
     font-weight: 700;
-    color: var(--color-azure-blue);
+    color: var(--color-white);
     line-height: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .stat-label {
     font-size: var(--font-size-small);
-    color: var(--color-gray-light);
+    color: rgba(255, 255, 255, 0.9);
     margin-top: var(--spacing-xs);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   WHAT YOU'LL LEARN SECTION
+   ========================================== */
+.what-you-learn {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--color-white);
+    text-align: center;
+}
+
+.what-you-learn .section-title {
+    margin-bottom: var(--spacing-sm);
+}
+
+.what-you-learn .section-subtitle {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: var(--font-size-large);
+    line-height: 1.7;
 }
 
 /* ==========================================
@@ -197,7 +258,7 @@ a:focus {
    ========================================== */
 .challenges {
     padding: var(--spacing-xxl) 0;
-    background-color: var(--color-white);
+    background-color: var(--color-gray-lightest);
 }
 
 .section-title {
@@ -277,7 +338,16 @@ a:focus {
     font-size: var(--font-size-h3);
     font-weight: 600;
     color: var(--color-gray);
+    margin-bottom: var(--spacing-xs);
+}
+
+.challenge-subtitle {
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    color: var(--card-accent-color, var(--color-azure-blue));
     margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .challenge-description {
@@ -788,6 +858,10 @@ a:focus {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+
+    .hero-banner::before {
+        animation: none !important;
     }
 }
 
