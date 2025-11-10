@@ -318,11 +318,13 @@
         hero: null,
         heroBanner: null,
         isReducedMotion: false,
-        mouseX: 0,
-        mouseY: 0,
-        currentX: 0,
-        currentY: 0,
+        mouseX: 0.5,
+        mouseY: 0.5,
+        currentX: 0.5,
+        currentY: 0.5,
         animationFrame: null,
+        isMobile: false,
+        supportsOrientation: false,
 
         /**
          * Initialize interactive hero gradient
@@ -341,9 +343,39 @@
                 return;
             }
 
-            // Listen for mouse movement on hero section
-            this.hero.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-            this.hero.addEventListener('mouseleave', () => this.handleMouseLeave());
+            // Detect mobile device
+            this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                || window.matchMedia('(max-width: 768px)').matches;
+
+            // Desktop: Mouse movement
+            if (!this.isMobile) {
+                this.hero.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.hero.addEventListener('mouseleave', () => this.handleMouseLeave());
+                console.log('[Interactive Hero] Desktop mode - mouse tracking enabled');
+            }
+            // Mobile: Touch + Device Orientation
+            else {
+                // Touch events
+                this.hero.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: true });
+                this.hero.addEventListener('touchstart', (e) => this.handleTouchMove(e), { passive: true });
+                this.hero.addEventListener('touchend', () => this.handleMouseLeave());
+
+                // Device orientation (tilt/gyroscope)
+                if (window.DeviceOrientationEvent) {
+                    // Check if permission is needed (iOS 13+)
+                    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                        this.supportsOrientation = true;
+                        console.log('[Interactive Hero] iOS - orientation available (requires permission)');
+                    } else {
+                        // Android and older iOS
+                        window.addEventListener('deviceorientation', (e) => this.handleOrientation(e), { passive: true });
+                        this.supportsOrientation = true;
+                        console.log('[Interactive Hero] Mobile mode - touch + orientation tracking enabled');
+                    }
+                } else {
+                    console.log('[Interactive Hero] Mobile mode - touch tracking enabled (no orientation)');
+                }
+            }
 
             // Start animation loop
             this.animate();
@@ -369,6 +401,40 @@
             // Return to center
             this.mouseX = 0.5;
             this.mouseY = 0.5;
+        },
+
+        /**
+         * Handle touch movement on mobile
+         */
+        handleTouchMove: function(e) {
+            if (!e.touches || e.touches.length === 0) return;
+
+            const touch = e.touches[0];
+            const rect = this.hero.getBoundingClientRect();
+
+            // Calculate touch position relative to hero (0 to 1)
+            this.mouseX = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+            this.mouseY = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+        },
+
+        /**
+         * Handle device orientation (tilt) on mobile
+         */
+        handleOrientation: function(e) {
+            if (!e.beta || !e.gamma) return;
+
+            // Beta: front-to-back tilt (-180 to 180)
+            // Gamma: left-to-right tilt (-90 to 90)
+
+            // Normalize gamma (left-right) to 0-1
+            // -45 to 45 degrees mapped to 0-1 (more sensitive range)
+            const gamma = Math.max(-45, Math.min(45, e.gamma));
+            this.mouseX = (gamma + 45) / 90;
+
+            // Normalize beta (forward-back) to 0-1
+            // 30 to 90 degrees mapped to 0-1 (accounting for typical holding angle)
+            const beta = Math.max(30, Math.min(90, e.beta));
+            this.mouseY = (beta - 30) / 60;
         },
 
         /**
