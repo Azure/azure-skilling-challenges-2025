@@ -481,7 +481,7 @@ a:focus {
    CERTIFICATION VOUCHERS SECTION
    ========================================== */
 .vouchers {
-    background: var(--color-white);
+    background: var(--color-gray-lightest);
     color: var(--color-gray);
     padding: var(--spacing-xxl) 0;
     text-align: center;
@@ -715,7 +715,7 @@ a:focus {
    ========================================== */
 .cta-section {
     padding: var(--spacing-xxl) 0;
-    background-color: var(--color-white);
+    background-color: var(--color-gray-lightest);
     text-align: center;
 }
 
@@ -1135,8 +1135,22 @@ a:focus {
    AZURE SKILLING EXPERIENCE SECTION
    ========================================== */
 .skilling-experience {
+    position: relative;
     padding: var(--spacing-xxl) 0;
-    background: var(--color-white);
+    background: linear-gradient(135deg, #0078d4 0%, #5c2d91 50%, #0078d4 100%);
+    overflow: hidden;
+}
+
+.skilling-experience .section-title,
+.skilling-experience .section-subtitle {
+    position: relative;
+    z-index: 1;
+    color: var(--color-white);
+}
+
+.skilling-experience .container {
+    position: relative;
+    z-index: 1;
 }
 
 .experience-grid {
@@ -1162,36 +1176,18 @@ a:focus {
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
 }
 
-.experience-gradient {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-.reactor-card .experience-gradient {
-    background: linear-gradient(135deg, #0078d4 0%, #5c2d91 100%);
-}
-
-.challenges-card .experience-gradient {
-    background: linear-gradient(135deg, #5c2d91 0%, #0078d4 100%);
-}
-
-.blog-card .experience-gradient {
-    background: linear-gradient(135deg, #0078d4 0%, #107c10 100%);
+.experience-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
 }
 
 .experience-content {
-    position: relative;
-    z-index: 1;
     padding: var(--spacing-xl);
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: var(--color-white);
+    color: var(--color-gray);
 }
 
 .experience-icon {
@@ -1204,11 +1200,11 @@ a:focus {
     font-size: var(--font-size-h3);
     font-weight: 700;
     margin-bottom: var(--spacing-sm);
-    color: var(--color-white);
+    color: var(--color-gray);
 }
 
 .experience-description {
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--color-gray-light);
     line-height: 1.7;
     font-size: 15px;
     margin-bottom: var(--spacing-md);
@@ -1216,7 +1212,7 @@ a:focus {
 
 .experience-cta {
     display: inline-block;
-    color: var(--color-white);
+    color: var(--color-azure-blue);
     font-weight: 600;
     font-size: var(--font-size-large);
     margin-top: auto;
@@ -1231,7 +1227,7 @@ a:focus {
    ========================================== */
 .how-it-works {
     padding: var(--spacing-xxl) 0;
-    background: var(--color-white);
+    background: var(--color-gray-lightest);
 }
 
 .steps-grid {
@@ -1279,8 +1275,22 @@ a:focus {
    FEATURED CHALLENGES SECTION
    ========================================== */
 .featured-challenges {
+    position: relative;
     padding: var(--spacing-xxl) 0;
-    background: var(--color-gray-lightest);
+    background: linear-gradient(135deg, #0078d4 0%, #5c2d91 50%, #0078d4 100%);
+    overflow: hidden;
+}
+
+.featured-challenges .section-title,
+.featured-challenges .section-subtitle {
+    position: relative;
+    z-index: 1;
+    color: var(--color-white);
+}
+
+.featured-challenges .container {
+    position: relative;
+    z-index: 1;
 }
 
 .featured-grid {
@@ -1291,13 +1301,16 @@ a:focus {
 }
 
 .featured-card {
-    background: var(--color-white);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-xl);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all var(--transition-base);
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
 }
 
 .featured-card:hover {

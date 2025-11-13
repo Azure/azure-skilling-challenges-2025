@@ -312,177 +312,183 @@
     };
 
     // ==========================================
-    // INTERACTIVE HERO GRADIENT
+    // INTERACTIVE GRADIENT FACTORY
     // ==========================================
-    const InteractiveHero = {
-        hero: null,
-        heroBanner: null,
-        isReducedMotion: false,
-        mouseX: 0.5,
-        mouseY: 0.5,
-        currentX: 0.5,
-        currentY: 0.5,
-        animationFrame: null,
-        isMobile: false,
-        supportsOrientation: false,
+    /**
+     * Creates an interactive gradient instance for a section
+     */
+    function createInteractiveGradient(sectionSelector) {
+        return {
+            section: null,
+            gradientBanner: null,
+            isReducedMotion: false,
+            mouseX: 0.5,
+            mouseY: 0.5,
+            currentX: 0.5,
+            currentY: 0.5,
+            animationFrame: null,
+            isMobile: false,
+            supportsOrientation: false,
+            selectorName: sectionSelector,
 
-        /**
-         * Initialize interactive hero gradient
-         */
-        init: function() {
-            this.hero = document.querySelector('.hero');
-            this.heroBanner = document.querySelector('.hero-banner');
+            /**
+             * Initialize interactive gradient
+             */
+            init: function() {
+                this.section = document.querySelector(sectionSelector);
+                this.gradientBanner = this.section ? this.section.querySelector('.hero-banner') : null;
 
-            if (!this.hero || !this.heroBanner) return;
+                if (!this.section || !this.gradientBanner) return;
 
-            // Check for reduced motion preference
-            this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                // Check for reduced motion preference
+                this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            if (this.isReducedMotion) {
-                console.log('[Interactive Hero] Reduced motion preferred - static gradient');
-                return;
-            }
+                if (this.isReducedMotion) {
+                    console.log(`[${this.selectorName}] Reduced motion preferred - static gradient`);
+                    return;
+                }
 
-            // Detect mobile device
-            this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-                || window.matchMedia('(max-width: 768px)').matches;
+                // Detect mobile device
+                this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                    || window.matchMedia('(max-width: 768px)').matches;
 
-            // Desktop: Mouse movement
-            if (!this.isMobile) {
-                this.hero.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-                this.hero.addEventListener('mouseleave', () => this.handleMouseLeave());
-                console.log('[Interactive Hero] Desktop mode - mouse tracking enabled');
-            }
-            // Mobile: Touch + Device Orientation
-            else {
-                // Touch events
-                this.hero.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: true });
-                this.hero.addEventListener('touchstart', (e) => this.handleTouchMove(e), { passive: true });
-                this.hero.addEventListener('touchend', () => this.handleMouseLeave());
+                // Desktop: Mouse movement
+                if (!this.isMobile) {
+                    this.section.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                    this.section.addEventListener('mouseleave', () => this.handleMouseLeave());
+                    console.log(`[${this.selectorName}] Desktop mode - mouse tracking enabled`);
+                }
+                // Mobile: Touch + Device Orientation
+                else {
+                    // Touch events
+                    this.section.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: true });
+                    this.section.addEventListener('touchstart', (e) => this.handleTouchMove(e), { passive: true });
+                    this.section.addEventListener('touchend', () => this.handleMouseLeave());
 
-                // Device orientation (tilt/gyroscope)
-                if (window.DeviceOrientationEvent) {
-                    // Check if permission is needed (iOS 13+)
-                    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                        this.supportsOrientation = true;
-                        console.log('[Interactive Hero] iOS - orientation available (requires permission)');
+                    // Device orientation (tilt/gyroscope)
+                    if (window.DeviceOrientationEvent) {
+                        // Check if permission is needed (iOS 13+)
+                        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                            this.supportsOrientation = true;
+                            console.log(`[${this.selectorName}] iOS - orientation available (requires permission)`);
+                        } else {
+                            // Android and older iOS
+                            window.addEventListener('deviceorientation', (e) => this.handleOrientation(e), { passive: true });
+                            this.supportsOrientation = true;
+                            console.log(`[${this.selectorName}] Mobile mode - touch + orientation tracking enabled`);
+                        }
                     } else {
-                        // Android and older iOS
-                        window.addEventListener('deviceorientation', (e) => this.handleOrientation(e), { passive: true });
-                        this.supportsOrientation = true;
-                        console.log('[Interactive Hero] Mobile mode - touch + orientation tracking enabled');
+                        console.log(`[${this.selectorName}] Mobile mode - touch tracking enabled (no orientation)`);
                     }
-                } else {
-                    console.log('[Interactive Hero] Mobile mode - touch tracking enabled (no orientation)');
+                }
+
+                // Start animation loop
+                this.animate();
+
+                console.log(`[${this.selectorName}] Dynamic gradient initialized`);
+            },
+
+            /**
+             * Handle mouse movement
+             */
+            handleMouseMove: function(e) {
+                const rect = this.section.getBoundingClientRect();
+
+                // Calculate mouse position relative to section (0 to 1)
+                this.mouseX = (e.clientX - rect.left) / rect.width;
+                this.mouseY = (e.clientY - rect.top) / rect.height;
+            },
+
+            /**
+             * Handle mouse leaving section area
+             */
+            handleMouseLeave: function() {
+                // Return to center
+                this.mouseX = 0.5;
+                this.mouseY = 0.5;
+            },
+
+            /**
+             * Handle touch movement on mobile
+             */
+            handleTouchMove: function(e) {
+                if (!e.touches || e.touches.length === 0) return;
+
+                const touch = e.touches[0];
+                const rect = this.section.getBoundingClientRect();
+
+                // Calculate touch position relative to section (0 to 1)
+                this.mouseX = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+                this.mouseY = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+            },
+
+            /**
+             * Handle device orientation (tilt) on mobile
+             */
+            handleOrientation: function(e) {
+                if (!e.beta || !e.gamma) return;
+
+                // Beta: front-to-back tilt (-180 to 180)
+                // Gamma: left-to-right tilt (-90 to 90)
+
+                // Normalize gamma (left-right) to 0-1
+                // -45 to 45 degrees mapped to 0-1 (more sensitive range)
+                const gamma = Math.max(-45, Math.min(45, e.gamma));
+                this.mouseX = (gamma + 45) / 90;
+
+                // Normalize beta (forward-back) to 0-1
+                // 30 to 90 degrees mapped to 0-1 (accounting for typical holding angle)
+                const beta = Math.max(30, Math.min(90, e.beta));
+                this.mouseY = (beta - 30) / 60;
+            },
+
+            /**
+             * Smooth animation loop using lerp (linear interpolation)
+             */
+            animate: function() {
+                // Lerp for smooth following (0.05 = slower, 0.2 = faster)
+                const smoothing = 0.08;
+                this.currentX += (this.mouseX - this.currentX) * smoothing;
+                this.currentY += (this.mouseY - this.currentY) * smoothing;
+
+                // Convert to percentages for CSS
+                const xPercent = this.currentX * 100;
+                const yPercent = this.currentY * 100;
+
+                // Create parallax layers with different speeds
+                const layer1X = 40 + (xPercent - 50) * 0.3; // Slow layer
+                const layer1Y = 50 + (yPercent - 50) * 0.3;
+
+                const layer2X = 70 + (xPercent - 50) * 0.5; // Medium layer
+                const layer2Y = 70 + (yPercent - 50) * 0.5;
+
+                const layer3X = 30 + (xPercent - 50) * 0.7; // Fast layer
+                const layer3Y = 30 + (yPercent - 50) * 0.7;
+
+                // Update CSS custom properties for gradient positions
+                this.gradientBanner.style.setProperty('--mouse-x', `${xPercent}%`);
+                this.gradientBanner.style.setProperty('--mouse-y', `${yPercent}%`);
+                this.gradientBanner.style.setProperty('--layer1-x', `${layer1X}%`);
+                this.gradientBanner.style.setProperty('--layer1-y', `${layer1Y}%`);
+                this.gradientBanner.style.setProperty('--layer2-x', `${layer2X}%`);
+                this.gradientBanner.style.setProperty('--layer2-y', `${layer2Y}%`);
+                this.gradientBanner.style.setProperty('--layer3-x', `${layer3X}%`);
+                this.gradientBanner.style.setProperty('--layer3-y', `${layer3Y}%`);
+
+                // Continue animation loop
+                this.animationFrame = requestAnimationFrame(() => this.animate());
+            },
+
+            /**
+             * Clean up animation frame
+             */
+            destroy: function() {
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
                 }
             }
-
-            // Start animation loop
-            this.animate();
-
-            console.log('[Interactive Hero] Dynamic gradient initialized');
-        },
-
-        /**
-         * Handle mouse movement
-         */
-        handleMouseMove: function(e) {
-            const rect = this.hero.getBoundingClientRect();
-
-            // Calculate mouse position relative to hero (0 to 1)
-            this.mouseX = (e.clientX - rect.left) / rect.width;
-            this.mouseY = (e.clientY - rect.top) / rect.height;
-        },
-
-        /**
-         * Handle mouse leaving hero area
-         */
-        handleMouseLeave: function() {
-            // Return to center
-            this.mouseX = 0.5;
-            this.mouseY = 0.5;
-        },
-
-        /**
-         * Handle touch movement on mobile
-         */
-        handleTouchMove: function(e) {
-            if (!e.touches || e.touches.length === 0) return;
-
-            const touch = e.touches[0];
-            const rect = this.hero.getBoundingClientRect();
-
-            // Calculate touch position relative to hero (0 to 1)
-            this.mouseX = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-            this.mouseY = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
-        },
-
-        /**
-         * Handle device orientation (tilt) on mobile
-         */
-        handleOrientation: function(e) {
-            if (!e.beta || !e.gamma) return;
-
-            // Beta: front-to-back tilt (-180 to 180)
-            // Gamma: left-to-right tilt (-90 to 90)
-
-            // Normalize gamma (left-right) to 0-1
-            // -45 to 45 degrees mapped to 0-1 (more sensitive range)
-            const gamma = Math.max(-45, Math.min(45, e.gamma));
-            this.mouseX = (gamma + 45) / 90;
-
-            // Normalize beta (forward-back) to 0-1
-            // 30 to 90 degrees mapped to 0-1 (accounting for typical holding angle)
-            const beta = Math.max(30, Math.min(90, e.beta));
-            this.mouseY = (beta - 30) / 60;
-        },
-
-        /**
-         * Smooth animation loop using lerp (linear interpolation)
-         */
-        animate: function() {
-            // Lerp for smooth following (0.05 = slower, 0.2 = faster)
-            const smoothing = 0.08;
-            this.currentX += (this.mouseX - this.currentX) * smoothing;
-            this.currentY += (this.mouseY - this.currentY) * smoothing;
-
-            // Convert to percentages for CSS
-            const xPercent = this.currentX * 100;
-            const yPercent = this.currentY * 100;
-
-            // Create parallax layers with different speeds
-            const layer1X = 40 + (xPercent - 50) * 0.3; // Slow layer
-            const layer1Y = 50 + (yPercent - 50) * 0.3;
-
-            const layer2X = 70 + (xPercent - 50) * 0.5; // Medium layer
-            const layer2Y = 70 + (yPercent - 50) * 0.5;
-
-            const layer3X = 30 + (xPercent - 50) * 0.7; // Fast layer
-            const layer3Y = 30 + (yPercent - 50) * 0.7;
-
-            // Update CSS custom properties for gradient positions
-            this.heroBanner.style.setProperty('--mouse-x', `${xPercent}%`);
-            this.heroBanner.style.setProperty('--mouse-y', `${yPercent}%`);
-            this.heroBanner.style.setProperty('--layer1-x', `${layer1X}%`);
-            this.heroBanner.style.setProperty('--layer1-y', `${layer1Y}%`);
-            this.heroBanner.style.setProperty('--layer2-x', `${layer2X}%`);
-            this.heroBanner.style.setProperty('--layer2-y', `${layer2Y}%`);
-            this.heroBanner.style.setProperty('--layer3-x', `${layer3X}%`);
-            this.heroBanner.style.setProperty('--layer3-y', `${layer3Y}%`);
-
-            // Continue animation loop
-            this.animationFrame = requestAnimationFrame(() => this.animate());
-        },
-
-        /**
-         * Clean up animation frame
-         */
-        destroy: function() {
-            if (this.animationFrame) {
-                cancelAnimationFrame(this.animationFrame);
-            }
-        }
-    };
+        };
+    }
 
     // ==========================================
     // MOBILE NAVIGATION
@@ -555,8 +561,15 @@
         // Accessibility enhancements
         Accessibility.initKeyboardShortcuts();
 
-        // Initialize interactive hero gradient
-        InteractiveHero.init();
+        // Initialize interactive gradients on all gradient sections
+        const heroGradient = createInteractiveGradient('.hero');
+        heroGradient.init();
+
+        const skillingGradient = createInteractiveGradient('.skilling-experience');
+        skillingGradient.init();
+
+        const featuredGradient = createInteractiveGradient('.featured-challenges');
+        featuredGradient.init();
 
         // Log ready state
         console.log('[Init] All features initialized');
