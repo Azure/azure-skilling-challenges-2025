@@ -32,6 +32,8 @@ Build intelligent applications with the latest AI technologies.
 3. **[Design Generative AI Solutions](https://aka.ms/IgniteGenAISolutionsChallenge?wt.mc_id=ignite25_skilling_webpage)** (AI-3003)
    Enterprise AI solution architecture
 
+---
+
 ### **Unify Your Data Platform**
 Transform data into insights with Microsoft Fabric.
 
@@ -44,6 +46,8 @@ Transform data into insights with Microsoft Fabric.
 6. **[Data Fundamentals](https://aka.ms/Ignite-DataFundamentalsChallenge?wt.mc_id=ignite25_skilling_webpage)** (DP-900)
    Core database concepts and warehousing
 
+---
+
 ### **Migrate & Modernize**
 Build intelligent solutions with Azure AI services.
 
@@ -53,11 +57,15 @@ Build intelligent solutions with Azure AI services.
 8. **[AI Engineer Associate](https://aka.ms/IgniteAIEngineerChallenge?wt.mc_id=ignite25_skilling_webpage)** (AI-102)
    End-to-end AI solutions on Azure
 
+---
+
 ### **Develop with AI-Powered Tools**
 Code faster with AI assistance.
 
 9. **[GitHub Copilot for Developers](https://aka.ms/IgniteAIDevSkillingChallenge?wt.mc_id=ignite25_skilling_webpage)** (MS-4012)
    AI-assisted development with GitHub Copilot
+
+---
 
 ### **Secure & Govern**
 Secure and govern AI solutions.
