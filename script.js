@@ -533,7 +533,7 @@
     // INITIALIZATION
     // ==========================================
     function init() {
-        console.log('[Init] Microsoft Ignite 2025 Azure Skilling Challenges');
+        console.log('[Init] Azure Skilling Challenges at Microsoft Ignite 2025');
         console.log('[Init] Landing page loaded successfully');
 
         // Initialize mobile navigation
