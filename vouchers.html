@@ -10,7 +10,7 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="container">
             <div class="nav-brand">
                 <a href="index.html" class="nav-logo">
@@ -23,14 +23,13 @@
                 <li><a href="challenges.html" class="nav-link">Challenges</a></li>
                 <li><a href="reactor.html" class="nav-link">Reactor</a></li>
                 <li><a href="vouchers.html" class="nav-link active">Vouchers</a></li>
-                
             </ul>
             <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span class="nav-toggle-icon"></span></button>
         </div>
     </nav>
 
     <!-- Event Ribbon -->
-    <div class="event-ribbon">
+    <div class="event-ribbon" role="banner">
         <div class="container">
             <span class="live-indicator">●</span>
             <span class="event-text">LIVE | November 10 - December 5, 2025 | Microsoft Ignite</span>
@@ -38,7 +37,7 @@
     </div>
 
     <!-- Hero -->
-    <section class="hero">
+    <section class="hero" role="main">
         <div class="hero-banner"></div>
         <div class="container">
             <h1 class="hero-title">Earn 50% Off Certification Exams</h1>
@@ -75,9 +74,9 @@
                 </div>
             </div>
 
-            <div style="margin-top: 48px; padding: 32px; background: #fff3cd; border-left: 4px solid #d83b01; border-radius: 8px;">
-                <h3 style="margin-top: 0; color: #d83b01;">⚠️ Terms & Conditions (Draft)</h3>
-                <ul style="color: #605e5c; line-height: 1.8;">
+            <div class="warning-box">
+                <h3 class="warning-box-title">⚠️ Terms & Conditions (Draft)</h3>
+                <ul class="warning-box-list">
                     <li>Limited to first 5,000 challenge completions</li>
                     <li>One voucher per person</li>
                     <li>Vouchers are non-transferable</li>
@@ -85,7 +84,7 @@
                     <li>Cannot be combined with other offers</li>
                     <li>Microsoft reserves the right to modify or terminate the program</li>
                 </ul>
-                <p style="color: #605e5c;"><strong>Note:</strong> Full terms and conditions will be provided upon voucher distribution.</p>
+                <p class="warning-box-note"><strong>Note:</strong> Full terms and conditions will be provided upon voucher distribution.</p>
             </div>
         </div>
     </section>
