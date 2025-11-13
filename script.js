@@ -312,11 +312,226 @@
     };
 
     // ==========================================
+    // INTERACTIVE HERO GRADIENT
+    // ==========================================
+    const InteractiveHero = {
+        hero: null,
+        heroBanner: null,
+        isReducedMotion: false,
+        mouseX: 0.5,
+        mouseY: 0.5,
+        currentX: 0.5,
+        currentY: 0.5,
+        animationFrame: null,
+        isMobile: false,
+        supportsOrientation: false,
+
+        /**
+         * Initialize interactive hero gradient
+         */
+        init: function() {
+            this.hero = document.querySelector('.hero');
+            this.heroBanner = document.querySelector('.hero-banner');
+
+            if (!this.hero || !this.heroBanner) return;
+
+            // Check for reduced motion preference
+            this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (this.isReducedMotion) {
+                console.log('[Interactive Hero] Reduced motion preferred - static gradient');
+                return;
+            }
+
+            // Detect mobile device
+            this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                || window.matchMedia('(max-width: 768px)').matches;
+
+            // Desktop: Mouse movement
+            if (!this.isMobile) {
+                this.hero.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.hero.addEventListener('mouseleave', () => this.handleMouseLeave());
+                console.log('[Interactive Hero] Desktop mode - mouse tracking enabled');
+            }
+            // Mobile: Touch + Device Orientation
+            else {
+                // Touch events
+                this.hero.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: true });
+                this.hero.addEventListener('touchstart', (e) => this.handleTouchMove(e), { passive: true });
+                this.hero.addEventListener('touchend', () => this.handleMouseLeave());
+
+                // Device orientation (tilt/gyroscope)
+                if (window.DeviceOrientationEvent) {
+                    // Check if permission is needed (iOS 13+)
+                    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                        this.supportsOrientation = true;
+                        console.log('[Interactive Hero] iOS - orientation available (requires permission)');
+                    } else {
+                        // Android and older iOS
+                        window.addEventListener('deviceorientation', (e) => this.handleOrientation(e), { passive: true });
+                        this.supportsOrientation = true;
+                        console.log('[Interactive Hero] Mobile mode - touch + orientation tracking enabled');
+                    }
+                } else {
+                    console.log('[Interactive Hero] Mobile mode - touch tracking enabled (no orientation)');
+                }
+            }
+
+            // Start animation loop
+            this.animate();
+
+            console.log('[Interactive Hero] Dynamic gradient initialized');
+        },
+
+        /**
+         * Handle mouse movement
+         */
+        handleMouseMove: function(e) {
+            const rect = this.hero.getBoundingClientRect();
+
+            // Calculate mouse position relative to hero (0 to 1)
+            this.mouseX = (e.clientX - rect.left) / rect.width;
+            this.mouseY = (e.clientY - rect.top) / rect.height;
+        },
+
+        /**
+         * Handle mouse leaving hero area
+         */
+        handleMouseLeave: function() {
+            // Return to center
+            this.mouseX = 0.5;
+            this.mouseY = 0.5;
+        },
+
+        /**
+         * Handle touch movement on mobile
+         */
+        handleTouchMove: function(e) {
+            if (!e.touches || e.touches.length === 0) return;
+
+            const touch = e.touches[0];
+            const rect = this.hero.getBoundingClientRect();
+
+            // Calculate touch position relative to hero (0 to 1)
+            this.mouseX = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+            this.mouseY = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+        },
+
+        /**
+         * Handle device orientation (tilt) on mobile
+         */
+        handleOrientation: function(e) {
+            if (!e.beta || !e.gamma) return;
+
+            // Beta: front-to-back tilt (-180 to 180)
+            // Gamma: left-to-right tilt (-90 to 90)
+
+            // Normalize gamma (left-right) to 0-1
+            // -45 to 45 degrees mapped to 0-1 (more sensitive range)
+            const gamma = Math.max(-45, Math.min(45, e.gamma));
+            this.mouseX = (gamma + 45) / 90;
+
+            // Normalize beta (forward-back) to 0-1
+            // 30 to 90 degrees mapped to 0-1 (accounting for typical holding angle)
+            const beta = Math.max(30, Math.min(90, e.beta));
+            this.mouseY = (beta - 30) / 60;
+        },
+
+        /**
+         * Smooth animation loop using lerp (linear interpolation)
+         */
+        animate: function() {
+            // Lerp for smooth following (0.05 = slower, 0.2 = faster)
+            const smoothing = 0.08;
+            this.currentX += (this.mouseX - this.currentX) * smoothing;
+            this.currentY += (this.mouseY - this.currentY) * smoothing;
+
+            // Convert to percentages for CSS
+            const xPercent = this.currentX * 100;
+            const yPercent = this.currentY * 100;
+
+            // Create parallax layers with different speeds
+            const layer1X = 40 + (xPercent - 50) * 0.3; // Slow layer
+            const layer1Y = 50 + (yPercent - 50) * 0.3;
+
+            const layer2X = 70 + (xPercent - 50) * 0.5; // Medium layer
+            const layer2Y = 70 + (yPercent - 50) * 0.5;
+
+            const layer3X = 30 + (xPercent - 50) * 0.7; // Fast layer
+            const layer3Y = 30 + (yPercent - 50) * 0.7;
+
+            // Update CSS custom properties for gradient positions
+            this.heroBanner.style.setProperty('--mouse-x', `${xPercent}%`);
+            this.heroBanner.style.setProperty('--mouse-y', `${yPercent}%`);
+            this.heroBanner.style.setProperty('--layer1-x', `${layer1X}%`);
+            this.heroBanner.style.setProperty('--layer1-y', `${layer1Y}%`);
+            this.heroBanner.style.setProperty('--layer2-x', `${layer2X}%`);
+            this.heroBanner.style.setProperty('--layer2-y', `${layer2Y}%`);
+            this.heroBanner.style.setProperty('--layer3-x', `${layer3X}%`);
+            this.heroBanner.style.setProperty('--layer3-y', `${layer3Y}%`);
+
+            // Continue animation loop
+            this.animationFrame = requestAnimationFrame(() => this.animate());
+        },
+
+        /**
+         * Clean up animation frame
+         */
+        destroy: function() {
+            if (this.animationFrame) {
+                cancelAnimationFrame(this.animationFrame);
+            }
+        }
+    };
+
+    // ==========================================
+    // MOBILE NAVIGATION
+    // ==========================================
+    const MobileNav = {
+        /**
+         * Initialize mobile navigation toggle
+         */
+        init: function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (!navToggle || !navLinks) return;
+
+            navToggle.addEventListener('click', () => {
+                const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+                navToggle.setAttribute('aria-expanded', !isExpanded);
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking on a link
+            navLinks.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            console.log('[Mobile Nav] Initialized');
+        }
+    };
+
+    // ==========================================
     // INITIALIZATION
     // ==========================================
     function init() {
         console.log('[Init] Microsoft Ignite 2025 Azure Skilling Challenges');
         console.log('[Init] Landing page loaded successfully');
+
+        // Initialize mobile navigation
+        MobileNav.init();
 
         // Track page load performance
         Analytics.trackPageLoad();
@@ -339,6 +554,9 @@
 
         // Accessibility enhancements
         Accessibility.initKeyboardShortcuts();
+
+        // Initialize interactive hero gradient
+        InteractiveHero.init();
 
         // Log ready state
         console.log('[Init] All features initialized');
