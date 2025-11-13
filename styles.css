@@ -179,23 +179,6 @@ a:focus {
     transition: background 0.3s ease;
 }
 
-.hero-banner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.03) 35px, rgba(255, 255, 255, 0.03) 70px);
-    animation: slide 20s linear infinite;
-}
-
-@keyframes slide {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(70px); }
-}
-
 .hero .container {
     position: relative;
     z-index: 1;
@@ -498,15 +481,18 @@ a:focus {
    CERTIFICATION VOUCHERS SECTION
    ========================================== */
 .vouchers {
-    background: linear-gradient(135deg, var(--color-purple), var(--color-azure-blue));
-    color: var(--color-white);
+    background: var(--color-white);
+    color: var(--color-gray);
     padding: var(--spacing-xxl) 0;
     text-align: center;
 }
 
-.vouchers .section-title,
+.vouchers .section-title {
+    color: var(--color-gray);
+}
+
 .vouchers .section-subtitle {
-    color: var(--color-white);
+    color: var(--color-gray-light);
 }
 
 .vouchers-grid {
@@ -517,18 +503,20 @@ a:focus {
 }
 
 .voucher-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--color-white);
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-xl);
     text-align: center;
     transition: all var(--transition-base);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--color-gray-lighter);
 }
 
 .voucher-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
 .voucher-card.featured {
@@ -572,7 +560,7 @@ a:focus {
     opacity: 0.9;
     font-style: italic;
     margin-top: var(--spacing-lg);
-    color: var(--color-white);
+    color: var(--color-gray-light);
 }
 
 /* ==========================================
