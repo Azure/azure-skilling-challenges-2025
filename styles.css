@@ -1169,16 +1169,13 @@ a:focus {
     min-height: 320px;
     transition: all var(--transition-base);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
 }
 
 .experience-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
-}
-
-.experience-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
 }
 
 .experience-content {
